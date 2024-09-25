@@ -2,7 +2,8 @@ from flask import Flask, request, render_template, redirect, url_for, send_file
 import matplotlib.pyplot as plt
 import requests
 import io
-import datetime
+import numpy as np
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -66,14 +67,19 @@ def plot_graph(begin_date, end_date):
     surge_data = get_difference(predicted_data, actual_data)
 
     # Create the graph
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(20, 12))
     plt.plot([entry['time'] for entry in predicted_data], [entry['value'] for entry in predicted_data], 'b-', label="Predicted Tide")
     plt.plot([entry['time'] for entry in actual_data], [entry['value'] for entry in actual_data], 'g-', label="Actual Water Level")
     plt.plot([entry['time'] for entry in surge_data], [entry['value'] for entry in surge_data], 'r-', label="Surge Difference")
-    plt.xticks(rotation=45)
-    plt.xlabel("Time")
+    # Select every 10th tick for the X-axis
+    x_ticks_positions = np.arange(0, len(predicted_data), 20)
+    x_tick_labels = [predicted_data[i]['time'] for i in x_ticks_positions]
+
+    plt.xticks(x_ticks_positions, x_tick_labels, rotation=45)
+    plt.xlabel("Date Time")
     plt.ylabel("Value")
-    plt.title(f"Tide & Water Level Data: {begin_date} to {end_date}")
+    datetime_format = "%Y%m%d"
+    plt.title(f"Tide & Water Level Data: {datetime.strptime(begin_date, datetime_format).date()} to {datetime.strptime(end_date, datetime_format).date()}")
     plt.legend()
     plt.tight_layout()
 

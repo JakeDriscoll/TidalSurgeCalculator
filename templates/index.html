@@ -14,5 +14,18 @@
         <input type="text" id="end_date" name="end_date" required>
         <button type="submit">Submit</button>
     </form>
+    <p>
+        This is all based on the NOAA data. The data is not available for all dates. If you enter a date that is not available, you will get an error message.
+        <br> <b>Data here is from the MobblyBayou station in Oldsmar, FL.</b>
+    </p>
+    <script>
+        // Default date value
+        const defaultBeginDate = '20240924';
+        const defaultEndDate = '20240926';
+
+        // Set default values for the text inputs
+        document.getElementById('begin_date').value = defaultBeginDate;
+        document.getElementById('end_date').value = defaultEndDate;
+    </script>
 </body>
 </html>
