@@ -80,6 +80,20 @@ def plot_graph(begin_date, end_date):
     plt.ylabel("Value")
     datetime_format = "%Y%m%d"
     plt.title(f"Tide & Water Level Data: {datetime.strptime(begin_date, datetime_format).date()} to {datetime.strptime(end_date, datetime_format).date()}")
+
+    # Add gridlines (horizontal only)
+    plt.grid(True, which='both', axis='y', linestyle='-', linewidth=0.5)
+
+    y_values_to_label = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5]  # You can modify these values based on your data
+
+    i = 0
+    for y_val in y_values_to_label:
+        plt.axhline(y=y_val, color='gray', linestyle='--', linewidth=0.5)  # Add a line for the y value
+        # Place text near the y-axis (adjust the x position slightly based on your plot range)
+        for x_val in x_ticks_positions:
+            if x_val % 3 == 0:
+                plt.text(x_val + 0.5, y_val, f"{y_val} ft", color='black', fontsize=9, verticalalignment='bottom')
+        # plt.text(x_ticks_positions[0], y_val, f"{y_val}", color='black', fontsize=9, verticalalignment='bottom')
     plt.legend()
     plt.tight_layout()
 
