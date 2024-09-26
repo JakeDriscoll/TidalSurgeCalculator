@@ -76,6 +76,8 @@ def plot_graph(begin_date, end_date):
     params['product'] = "water_level"
     actual_data = get_noaa_data(params, "data")
     surge_data = get_difference(predicted_data, actual_data)
+    max_actual_entry = max(actual_data, key=lambda x: x['value'])
+    max_water_height = max_actual_entry['value']
 
     # Create the graph
     plt.figure(figsize=(20, 12))
@@ -95,7 +97,15 @@ def plot_graph(begin_date, end_date):
     # Add gridlines (horizontal only)
     plt.grid(True, which='both', axis='y', linestyle='-', linewidth=0.5)
 
-    y_values_to_label = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5]  # You can modify these values based on your data
+    #y_values_to_label = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]  # You can modify these values based on your data
+    # Initialize an empty list
+    y_values_to_label = []
+
+    # Start from 0, increment by 0.5 until reaching max_value
+    current_value = 0.0
+    while current_value <= max_water_height:
+        y_values_to_label.append(current_value)
+        current_value += 0.5
 
     i = 0
     for y_val in y_values_to_label:
@@ -103,7 +113,8 @@ def plot_graph(begin_date, end_date):
         # Place text near the y-axis (adjust the x position slightly based on your plot range)
         for x_val in x_ticks_positions:
             if x_val % 3 == 0:
-                plt.text(x_val + 0.5, y_val, f"{y_val} ft", color='black', fontsize=9, verticalalignment='bottom')
+                if y_val <= max_water_height:
+                    plt.text(x_val + 0.5, y_val, f"{y_val} ft", color='black', fontsize=9, verticalalignment='bottom')
         # plt.text(x_ticks_positions[0], y_val, f"{y_val}", color='black', fontsize=9, verticalalignment='bottom')
     plt.legend()
     plt.tight_layout()
