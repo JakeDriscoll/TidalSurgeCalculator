@@ -13,7 +13,18 @@ def get_noaa_data(params, data_key):
     if response.status_code == 200:
         data = response.json()
         predictions = data[data_key]
-        values_array = [{"time": entry["t"], "value": float(entry["v"])} for entry in predictions]
+        values_array = []
+        
+        for entry in predictions:
+            time = entry["t"] 
+            value_str = entry["v"]
+            
+            # Check if the value is not an empty string
+            if value_str:
+                values_array.append({"time": time, "value": float(value_str)})
+            else:
+                values_array.append({"time": time, "value": None})  # or simply skip this entry
+
         return sorted(values_array, key=lambda x: x["time"])
     return None
 
