@@ -75,6 +75,8 @@ def plot_graph(begin_date, end_date):
     predicted_data = get_noaa_data(params, "predictions")
     params['product'] = "water_level"
     actual_data = get_noaa_data(params, "data")
+    if predicted_data is None or actual_data is None:
+        return render_template('error.html')
     surge_data = get_difference(predicted_data, actual_data)
     max_actual_entry = max(actual_data, key=lambda x: x['value'])
     max_water_height = max_actual_entry['value']
