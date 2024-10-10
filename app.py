@@ -104,7 +104,7 @@ def plot_graph(begin_date, end_date):
     y_values_to_label = []
 
     # Start from 0, increment by 0.5 until reaching max_value
-    current_value = 0.0
+    current_value = -3.0
     while current_value <= max_water_height:
         y_values_to_label.append(current_value)
         current_value += 0.5
